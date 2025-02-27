@@ -1,0 +1,12 @@
+port: 8080
+
+logging:
+  requestLogEnable: false
+  logAccess:
+    filePath:
+
+errorCatch:
+  enable: true
+
+cors:
+  enable: true
