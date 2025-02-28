@@ -6,6 +6,7 @@ import (
 	"fmt"
 	openai "github.com/sashabaranov/go-openai"
 	"log"
+
 	"os"
 	"strings"
 )
@@ -17,7 +18,14 @@ func init() {
 	MessageStore.Clear() //清理和初始化
 }
 
-func K8sChat(prompt string) string {
+const PromptTemplate = `please help me extract the k8s elements of this text: "{prompt}"
+Here is the answer template:
+{body_template}
+Please fill in the text in {} completely according to the template. If it cannot be extracted, fill in "nothing". Each line cannot be omitted and must be filled in English. Don't give any explanation`
+
+func K8sChat(userPrompt, bodyTemplate string) string {
+	prompt := strings.Replace(PromptTemplate, "{prompt}", userPrompt, 1)
+	prompt = strings.Replace(prompt, "{body_template}", bodyTemplate, 1)
 	c := NewOpenAiClient()
 	MessageStore.AddForUser(prompt)
 	rsp, err := c.CreateChatCompletion(context.TODO(), openai.ChatCompletionRequest{
@@ -46,9 +54,8 @@ const (
 
 func (cm *ChatMessages) Clear() {
 	*cm = make([]*ChatMessage, 0) //重新初始化
-
-	//cm.AddForSystem("You are a helpful K8S assistant. Use the provided text to form your answer. Keep your answer within 10 sentences. Accurate, helpful, concise and to the point")
-	cm.AddForSystem("You are a helpful K8S assistant. I will provide you with text, including the question title or keywords, question description, and reference answer. If I provide a reference answer, please try to use it as much as possible.Try to answer in Chinese as much as possible, Keep your answer within 10 sentences. Accurate, useful, concise and to the point")
+	msg := `You are a helpful k8s assistant`
+	cm.AddForSystem(msg)
 }
 
 func (cm *ChatMessages) AddFor(msg string, role string) {

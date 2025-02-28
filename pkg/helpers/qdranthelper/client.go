@@ -147,7 +147,7 @@ func (qc *QdrantClient) Search(collection string, vector []float32) ([]*pb.Score
 		WithPayload: &pb.WithPayloadSelector{
 			SelectorOptions: &pb.WithPayloadSelector_Include{
 				Include: &pb.PayloadIncludeSelector{
-					Fields: []string{"title", "question", "answers"}, // 暴露 title 和 question 字段
+					Fields: []string{"url", "method", "body_template"}, // 暴露的字段
 				},
 			},
 		},

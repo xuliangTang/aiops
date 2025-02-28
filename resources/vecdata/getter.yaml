@@ -4,7 +4,7 @@ prompt: |
   也支持查询k8s集群的节点列表(nodes)、命名空间列表(namespaces)、服务列表(services)、存储卷列表(pv)、存储卷声明列表(pvc)、
   角色列表(roles)、角色绑定列表(rolebindings)、
 payload:
-  url: "http://{host}:{port}/resources/{name}"
+  url: "http://{host}:{port}/resources/{name}?ns={namespace}"
   method: "GET"
   body_template: |
     {
