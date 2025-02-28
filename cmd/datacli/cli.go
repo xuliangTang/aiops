@@ -56,7 +56,7 @@ func Run(f string, collection string) error {
 		return err
 	}
 
-	err = qdranthelper.Collection(collection).Create(1536)
+	err = qdranthelper.Collection(collection).Create(1024)
 	if err != nil {
 		log.Fatalln("创建collection出错:", err.Error())
 	}
@@ -71,7 +71,6 @@ func Run(f string, collection string) error {
 			continue
 		}
 		psSet = append(psSet, ps)
-
 	}
 	err = qdranthelper.FastQdrantClient.CreatePoints(collection, psSet)
 	if err != nil {

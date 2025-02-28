@@ -1,7 +1,7 @@
 package datacli
 
 import (
-	"aipos/pkg/helpers/openaihelper"
+	"aipos/pkg/helpers/qwenhelper"
 	"crypto/md5"
 	"encoding/hex"
 	pb "github.com/qdrant/go-client/qdrant"
@@ -40,7 +40,8 @@ func (p *Point) toPayload(host, port string) map[string]*pb.Value {
 }
 
 func (p *Point) Build(host, port string) (*pb.PointStruct, error) {
-	vec, err := openaihelper.SimpleGetVec(p.Prompt) //调用OpenAI 获得向量
+	//vec, err := openaihelper.SimpleGetVec(p.Prompt) //调用OpenAI 获得向量
+	vec, err := qwenhelper.GetVec(p.Prompt)
 	if err != nil {
 		log.Println("获取向量失败", err)
 		return nil, err
