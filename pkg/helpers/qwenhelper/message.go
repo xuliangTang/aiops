@@ -51,10 +51,10 @@ func (cm *ChatMessages) Clear() {
 
 const UrlChat = "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions"
 
-const PromptTemplate = `please help me extract the k8s elements of this text: "{prompt}"
-Here is the answer template:
+const PromptTemplate = `Extract the k8s elements from this text: "{prompt}"
+Use this template:
 {body_template}
-Please fill in the text in {} completely according to the template. If it cannot be extracted, fill in "nothing". The generated result is a replaced JSON, Please provide the code in plain text format without using any markdown-style code blocks, Each line cannot be omitted and must be filled in English. Don't give any explanation`
+Fill the {} with extracted values. If a field cannot be extracted, use "nothing". For "name", extract the resource type (e.g., "pods", "services"). Provide the result as plain JSON without markdown or explanations. Each line must be filled in English.`
 
 func K8sChat(userPrompt, bodyTemplate string) string {
 	prompt := strings.Replace(PromptTemplate, "{prompt}", userPrompt, 1)

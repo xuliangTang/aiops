@@ -52,7 +52,7 @@ func (p *Point) Build(host, port string) (*pb.PointStruct, error) {
 
 	ps.Id = &pb.PointId{
 		PointIdOptions: &pb.PointId_Uuid{
-			Uuid: md5str(p.Prompt), //请自行保证 ID唯一
+			Uuid: md5str(p.Prompt), // 保证ID唯一
 		},
 	}
 	ps.Vectors = &pb.Vectors{

@@ -27,8 +27,13 @@ func run(port int) error {
 	server := athena.Ignite().Configuration(
 		configurations.NewK8sConfig(),
 	).Mount(
-		"", nil, controllers.NewResourcesController(),
+		"", nil,
+		controllers.NewResourcesController(),
+		controllers.NewPromptController(),
 	)
+
+	server.StaticFS("/html", http.Dir("./asserts/html"))     // 网页
+	server.StaticFS("/static", http.Dir("./asserts/static")) // 静态资源 包含脚本 样式
 	server.Launch()
 	return nil
 }

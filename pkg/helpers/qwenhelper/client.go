@@ -46,7 +46,7 @@ func doPost(url string, reqBody, respObj interface{}) {
 	}
 
 	// 打印响应
-	fmt.Printf("Response Status: %s\n", resp.Status)
+	log.Printf("Response Status: %s\n", resp.Status)
 	if err = json.Unmarshal(body, &respObj); err != nil {
 		log.Fatalln(err)
 	}

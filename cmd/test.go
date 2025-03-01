@@ -9,7 +9,7 @@ import (
 
 func main() {
 	// 提示词生成向量
-	userPrompt := "我要获取default命名空间下的pods列表"
+	userPrompt := "我要获取test命名空间下的所有pods列表"
 	vec, err := qwenhelper.GetVec(userPrompt)
 	if err != nil {
 		panic(err)
