@@ -1,10 +1,9 @@
 prompt: |
   查询或列出k8s(kubernetes)的资源列表,使用的方式是通过rest api直接请求k8s apiserver.
-  支持查询pods、deployments、daemonsets、secrets、configmaps、events、crd等一切k8s资源和自定义资源,
-  也支持查询k8s集群的节点列表(nodes)、命名空间列表(namespaces)、服务列表(services)、存储卷列表(pv)、存储卷声明列表(pvc)、
-  角色列表(roles)、角色绑定列表(rolebindings)、
+  支持查询pods、deployments、daemonsets、secrets、configmaps、events、crd、namespaces、nodes、pvc、pv、services、roles、roles、rolebindings等一切k8s资源和自定义资源
+ignore: false
 payload:
-  url: "http://{host}:{port}/resources/{name}?ns={namespace}"
+  url: "http://{host}:{port}/resources/{name}?namespace={namespace}"
   method: "GET"
   body_template: |
     {
@@ -14,8 +13,22 @@ payload:
     }
 ---
 prompt: |
+  用于查看详情、详细描述或describe资源,支持的资源包括:pod、deployment、deploy、daemonset、ds、secret、configmap、cm、event、crd、namespace、ns、node、pvc、pv、service、svc、role、rolebinding等一切k8s资源和自定义资源
+ignore: false
+payload:
+  url: "http://{host}:{port}/resources/{kind}/{name}?namespace={namespace}"
+  method: "GET"
+  body_template: |
+    {
+     "namespace": "{}",
+     "kind": "{}",
+     "name":"{}
+    }
+---
+prompt: |
   删除(删掉、delete、remove)k8s(kubernetes)的资源,可删除的资源包括:pods、deployments、daemonsets、secrets、configmaps、events
-  也包括:命名空间列表(namespaces)、服务列表(services)、存储卷列表(pv)、存储卷声明列表(pvc)、角色列表(roles)、角色绑定列表(rolebindings)
+  也包括:namespaces、nodes、pvc、pv、services、roles、roles、rolebindings
+ignore: false
 payload:
   url: "http://{host}:{port}/resources/{name}/{resname}?namespace={namespace}"
   method: "DELETE"
@@ -24,4 +37,15 @@ payload:
       "namespace": "{}",
       "name": "{}"
       "resname": "{}"
+    }
+---
+prompt: |
+  用于查询k8s当前版本信息
+ignore: false
+payload:
+  url: "http://{host}:{port}/systeminfo/verson"
+  method: "GET"
+  body_template: |
+    {
+      "action": "version"
     }

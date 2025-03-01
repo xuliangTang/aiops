@@ -63,10 +63,10 @@
 <div style="width: 100%;text-align: center">
     <h4>AI k8s可视化管理系统DEMO页面</h4>
 </div>
-<div class="result" id="result">
+<!--<div class="result" id="result">-->
 
 
-</div>
+<!--</div>-->
 <div style="text-align: center" id="divPrompt">
     <textarea class="promptext" id="txtPrompt"  placeholder="请输入你的需求。。。按回车"></textarea>
 
@@ -122,9 +122,10 @@
             .then(function (response) {
                 const retData=response.data.data
                 try{
-                    editor.setValue(JSON.stringify(retData,null,4))
+                    editor.setValue(JSON.stringify(JSON.parse(retData),null,4))
                 }catch (e){
-                    alert(e)
+                    // 说明无法解析为json 直接显示
+                    editor.setValue(retData,null,4)
                 }
                 $("#divPrompt").busyLoad("hide");
             })
