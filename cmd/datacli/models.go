@@ -16,6 +16,7 @@ type PointPayload struct {
 }
 
 type Point struct {
+	Id      string        `json:"id"`
 	Payload *PointPayload `json:"payload"`
 	Prompt  string        `json:"prompt"`
 	Ignore  bool          `json:"ignore"` // 如果设置为true则不会进行向量处理
@@ -52,7 +53,7 @@ func (p *Point) Build(host, port string) (*pb.PointStruct, error) {
 
 	ps.Id = &pb.PointId{
 		PointIdOptions: &pb.PointId_Uuid{
-			Uuid: md5str(p.Prompt), // 保证ID唯一
+			Uuid: md5str(p.Id), // 保证ID唯一
 		},
 	}
 	ps.Vectors = &pb.Vectors{

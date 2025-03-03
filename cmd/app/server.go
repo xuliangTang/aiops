@@ -30,6 +30,7 @@ func run(port int) error {
 		"", nil,
 		controllers.NewResourcesController(),
 		controllers.NewPromptController(),
+		controllers.NewShellController(),
 	)
 
 	server.StaticFS("/html", http.Dir("./asserts/html"))     // 网页

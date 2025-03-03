@@ -8,11 +8,14 @@
     <script src="/static/codemirror.js"></script>
     <script src="/static/codego.js"></script>
     <script src="/static/axios.js"></script>
-    <script src="/static/tools.js"></script>
+    <script src="/static/tools.js?a=1"></script>
     <link href="/static/table.css" rel="stylesheet"/>
     <script src="/static/jq3.js"></script>
     <script src="/static/busy-load.js"></script>
+    <script src="/static/md5.js" ></script>
     <link href="/static/busy-load.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/xterm/css/xterm.css" />
+    <script src="/static/xterm/lib/xterm.js" ></script>
     <style>
         .CodeMirror{
             font-size : 20px;
@@ -63,10 +66,10 @@
 <div style="width: 100%;text-align: center">
     <h4>AI k8s可视化管理系统DEMO页面</h4>
 </div>
-<!--<div class="result" id="result">-->
+<div class="result" id="result">
 
 
-<!--</div>-->
+</div>
 <div style="text-align: center" id="divPrompt">
     <textarea class="promptext" id="txtPrompt"  placeholder="请输入你的需求。。。按回车"></textarea>
 
@@ -122,12 +125,21 @@
             .then(function (response) {
                 const retData=response.data.data
                 try{
+                    //如果这里有值，那么代表是shell模式
+                    let geturl=if_shell_return_url(retData)
+                    if(geturl!==""){
+                        createTerminalDiv(geturl)
+                        return
+                    }
+
                     editor.setValue(JSON.stringify(JSON.parse(retData),null,4))
                 }catch (e){
+                    console.log(e)
                     // 说明无法解析为json 直接显示
                     editor.setValue(retData,null,4)
+                }finally {
+                    $("#divPrompt").busyLoad("hide");
                 }
-                $("#divPrompt").busyLoad("hide");
             })
             .catch(function (e) {
                 if( e.response ){
